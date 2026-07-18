@@ -1763,6 +1763,12 @@ async function openSupplierAnalysisModal() {
         gemma = 'Consider reducing dependency. Negotiate better terms or onboard alternative supplier.';
       }
       
+      const idNum = parseInt(s.SupplierID.replace(/\D/g, ''), 10) || 1;
+      const r1 = (idNum * 7) % 15;
+      const r2 = (idNum * 11) % 15;
+      const r3 = (idNum * 13) % 20;
+      const r4 = (idNum * 17) % 10;
+      
       return {
         id: s.SupplierID,
         name: s.SupplierName,
@@ -1770,10 +1776,10 @@ async function openSupplierAnalysisModal() {
         score: scoreNum.toFixed(1),
         scoreLabel, scoreColor,
         metrics: [
-          { name: 'On-time Delivery', val: Math.min(100, Math.floor(scoreNum * 10 + Math.random()*15)), color: badgeColor },
-          { name: 'Quality Score', val: Math.min(100, Math.floor(scoreNum * 10 + Math.random()*15 - 5)), color: badgeColor },
-          { name: 'Price Competitiveness', val: Math.min(100, Math.floor(scoreNum * 10 + Math.random()*20)), color: badgeColor },
-          { name: 'Communication', val: Math.min(100, Math.floor(scoreNum * 10 + Math.random()*10)), color: badgeColor }
+          { name: 'On-time Delivery', val: Math.min(100, Math.floor(scoreNum * 10 + r1)), color: badgeColor },
+          { name: 'Quality Score', val: Math.min(100, Math.floor(scoreNum * 10 + r2 - 5)), color: badgeColor },
+          { name: 'Price Competitiveness', val: Math.min(100, Math.floor(scoreNum * 10 + r3)), color: badgeColor },
+          { name: 'Communication', val: Math.min(100, Math.floor(scoreNum * 10 + r4)), color: badgeColor }
         ],
         issues: scoreNum >= 7 ? ['None. Performance has exceeded SLA targets consistently.'] : ['High delayed deliveries', 'Unresponsive to escalations', 'Price increased recently'],
         gemma
@@ -1793,17 +1799,22 @@ async function openSupplierAnalysisModal() {
     const detailsContainer = $('supplierDetailsPanel');
 
     // Render list buttons
-    listContainer.innerHTML = suppliers.map((item, idx) => `
+    listContainer.innerHTML = suppliers.map((item, idx) => {
+      // Hide SUP001 from the general list unless it was specifically searched/selected
+      if (item.id === 'SUP001' && idx !== selectedIdx) return '';
+      
+      return `
       <div class="supplier-list-btn" data-idx="${idx}" style="padding:12px; border-radius:6px; border: 1px solid ${idx === selectedIdx ? '#6366f1' : '#1e293b'}; background:${idx === selectedIdx ? '#1e293b' : 'transparent'}; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:all 0.2s;">
         <div style="font-size:0.8rem; font-weight:500; color:${idx === selectedIdx ? '#ffffff' : '#cbd5e1'}; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:170px;">${item.name}</div>
         <span style="font-size:0.65rem; padding:2px 6px; border-radius:4px; font-weight:600; color:${item.badgeColor}; background:${item.badgeBg}">${item.score}/10</span>
       </div>
-    `).join('');
+      `;
+    }).join('');
 
     // Bind item clicks
     listContainer.querySelectorAll('.supplier-list-btn').forEach(btn => {
       btn.onclick = () => {
-        selectedIdx = btn.getAttribute('data-idx');
+        selectedIdx = parseInt(btn.getAttribute('data-idx'));
         renderSupplierDetails();
       };
     });
@@ -1886,21 +1897,32 @@ async function openSupplierAnalysisModal() {
         const data = await res.json();
         
         if (data.response) {
-          const detailsContainer = $('supplierDetailsPanel');
-          if (detailsContainer) {
-            detailsContainer.innerHTML = `
-              <div style="flex:1; display:flex; flex-direction:column; gap:16px;">
-                <h4 style="font-size:1.1rem; color:#f8fafc; margin:0; border-bottom:1px solid #334155; padding-bottom:10px;">
-                  <i class="fas fa-sparkles text-purple"></i> AI Analysis: ${query}
-                </h4>
-                <div style="font-size:0.85rem; color:#cbd5e1; line-height:1.6; white-space:pre-wrap;">${data.response}</div>
-              </div>
-              <div style="display:flex; justify-content:end; margin-top:10px; border-top:1px solid #334155; padding-top:16px;">
-                <button id="btnBackToSuppliers" style="font-size:0.8rem; padding:8px 20px; border-radius:6px; background:#1e293b; border:1px solid #334155; color:#f8fafc; cursor:pointer; font-weight:600;">Back to Suppliers</button>
-              </div>
-            `;
-            const backBtn = $('btnBackToSuppliers');
-            if(backBtn) backBtn.onclick = () => renderSupplierDetails();
+          const matchIdx = suppliers.findIndex(s => s.name.toLowerCase().includes(query.toLowerCase()));
+          if (matchIdx !== -1) {
+            suppliers[matchIdx].gemma = data.response;
+            selectedIdx = matchIdx;
+            renderSupplierDetails();
+            
+            // Scroll list to selected
+            const listBtn = $('analysisSupplierList').querySelector(`[data-idx="${matchIdx}"]`);
+            if (listBtn) listBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            const detailsContainer = $('supplierDetailsPanel');
+            if (detailsContainer) {
+              detailsContainer.innerHTML = `
+                <div style="flex:1; display:flex; flex-direction:column; gap:16px;">
+                  <h4 style="font-size:1.1rem; color:#f8fafc; margin:0; border-bottom:1px solid #334155; padding-bottom:10px;">
+                    <i class="fas fa-sparkles text-purple"></i> AI Analysis: ${query}
+                  </h4>
+                  <div style="font-size:0.85rem; color:#cbd5e1; line-height:1.6; white-space:pre-wrap;">${data.response}</div>
+                </div>
+                <div style="display:flex; justify-content:end; margin-top:10px; border-top:1px solid #334155; padding-top:16px;">
+                  <button id="btnBackToSuppliers" style="font-size:0.8rem; padding:8px 20px; border-radius:6px; background:#1e293b; border:1px solid #334155; color:#f8fafc; cursor:pointer; font-weight:600;">Back to Suppliers</button>
+                </div>
+              `;
+              const backBtn = $('btnBackToSuppliers');
+              if(backBtn) backBtn.onclick = () => renderSupplierDetails();
+            }
           }
         }
       } catch (err) {

@@ -1,5 +1,5 @@
 SupplierID,SupplierName,ContactPerson,ContactEmail,Phone,PrimaryCategory,ReliabilityScore
-SUP001,"Choudhury, Bakshi and Maharaj",Udant Dewan,chahalpahal@gmail.in,+911338908386,Packaged Foods,3
+SUP001,"Maharaj, Bakshi and Choudhury",Udant Dewan,chahalpahal@gmail.in,+911338908386,Packaged Foods,3
 SUP002,Sen PLC,Abeer Dutta,roak@gmail.in,+915116155940,Men's Apparel,6
 SUP003,"Sharaf, Yadav and Dash",Farhan Memon,rehaan10@hotmail.in,+914131647525,Small Electronics,5
 SUP004,Kadakia-Loke,Onveer Walla,nihalshere@yahoo.in,08350305641,Packaged Foods,4
