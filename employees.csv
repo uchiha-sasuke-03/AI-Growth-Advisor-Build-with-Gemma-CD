@@ -1,0 +1,26 @@
+EmployeeID,EmployeeName,JobRole,HireDate,TrainingCode,IsActive
+EMP01,Hiral Bawa,Store Manager,2025-05-01,L-PLACEAT,1
+EMP02,Jyoti Atwal,Store Manager,2025-05-01,L-SAPIENTE,1
+EMP03,Yatin Gour,Cashier,2025-05-01,L-QUAM,1
+EMP04,Udyati Bakshi,Logistics Coordinator,2025-05-01,L-DESERUNT,1
+EMP05,Anamika Agrawal,Logistics Coordinator,2025-05-01,L-INCIDUNT,1
+EMP06,Gabriel Bajwa,Cashier,2025-05-01,L-SIT,1
+EMP07,Upadhriti Sule,Warehouse Associate,2025-05-01,L-CONSEQUATUR,1
+EMP08,Warinder Narasimhan,Store Manager,2025-05-01,L-VOLUPTATES,1
+EMP09,Kai Suresh,Sales Associate,2025-05-01,L-PARIATUR,1
+EMP10,Vrishti Sarin,Store Manager,2025-05-01,L-LIBERO,1
+EMP11,Aarini Sastry,Cashier,2025-05-01,L-NAM,1
+EMP12,Raksha Datta,Store Manager,2025-05-01,L-NUMQUAM,1
+EMP13,Vamakshi Kar,Sales Associate,2025-05-01,L-LABORE,1
+EMP14,Dayita Chhabra,Logistics Coordinator,2025-05-01,L-ILLO,1
+EMP15,Gunbir Gole,Cashier,2025-05-01,L-MOLESTIAS,1
+EMP16,Priya Cherian,Warehouse Associate,2025-05-01,L-LABORE,1
+EMP17,Teerth Datta,Store Manager,2025-05-01,L-SEQUI,1
+EMP18,Praneel Shere,Store Manager,2025-05-01,L-VOLUPTATUM,1
+EMP19,Liam Biswas,Warehouse Associate,2025-05-01,L-LABORUM,1
+EMP20,Guneet Johal,Warehouse Associate,2025-05-01,L-FACERE,1
+EMP21,Zaid Bedi,Sales Associate,2025-05-01,L-NOSTRUM,1
+EMP22,Urmi Zacharia,Store Manager,2025-05-01,L-SIMILIQUE,1
+EMP23,Yamini Golla,Cashier,2025-05-01,L-ILLO,1
+EMP24,Urvashi Gulati,Store Manager,2025-05-01,L-ESSE,1
+EMP25,Karan Bassi,Sales Associate,2025-05-01,L-EST,1

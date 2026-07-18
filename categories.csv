@@ -1,0 +1,9 @@
+CategoryID,CategoryName,GST_Rate
+CAT001,Fresh Groceries,0.05
+CAT002,Packaged Foods,0.12
+CAT003,Large Appliances,0.18
+CAT004,Small Electronics,0.18
+CAT005,Men's Apparel,0.12
+CAT006,Women's Apparel,0.12
+CAT007,Cookware & Pots,0.12
+CAT008,Kitchen Gadgets,0.18
