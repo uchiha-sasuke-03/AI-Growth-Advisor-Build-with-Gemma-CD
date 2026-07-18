@@ -34,62 +34,122 @@
                 <a href="#" class="nav-item active" data-target="dashboard">
                     <i class="fas fa-th-large"></i>
                     <span>Dashboard</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Overview of your business at a glance.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="ai-chat">
                     <i class="fas fa-robot"></i>
                     <span>AI Advisor (Gemma)</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Ask AI for business advice and insights.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="sales-analytics">
                     <i class="fas fa-chart-bar"></i>
                     <span>Sales Analytics</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Analyze your sales performance.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="customers">
                     <i class="fas fa-users"></i>
                     <span>Customers & Collections</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Manage customers and track collections.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="suppliers">
                     <i class="fas fa-truck"></i>
                     <span>Suppliers & Purchases</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Manage suppliers and purchase orders.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="inventory">
                     <i class="fas fa-boxes-stacked"></i>
                     <span>Inventory Intelligence</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Track stock levels and get inventory insights.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="expenses">
                     <i class="fas fa-receipt"></i>
                     <span>Expenses</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Track and manage your expenses.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="revenue-forecast">
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Cash Flow</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Monitor cash inflow and outflow.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="reports">
                     <i class="fas fa-file-alt"></i>
                     <span>Reports</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">View and download detailed reports.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="alerts">
                     <i class="fas fa-bell"></i>
                     <span>Alerts & Insights</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Get important alerts and insights.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="goals">
                     <i class="fas fa-bullseye"></i>
                     <span>Goals & Growth</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Set goals and track your growth.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="settings">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Customize your account and preferences.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="profile">
                     <i class="fas fa-user"></i>
                     <span>Profile</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">View and update your profile.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item" data-target="help">
                     <i class="fas fa-question-circle"></i>
                     <span>Help & Support</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Get help and contact support team.</div>
+                    </div>
                 </a>
                 <a href="#" class="nav-item logout-nav" data-target="logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
+                    <div class="nav-info-wrapper">
+                        <i class="far fa-circle-question info-icon"></i>
+                        <div class="custom-tooltip">Sign out from your account.</div>
+                    </div>
                 </a>
             </nav>
 
@@ -155,38 +215,47 @@
                             <!-- UPPER GRID (KPI Cards & Business Health Score card) -->
                             <div class="dashboard-grid-upper">
                                 <!-- 4 Sparkline KPI Cards -->
-                                <div class="kpi-card" data-target="sales-analytics">
+                                <div class="kpi-card" data-target="sales-analytics" title="Total Sales">
                                     <div class="kpi-icon revenue"><i class="fas fa-indian-rupee-sign"></i></div>
                                     <div class="kpi-info-group">
                                         <span class="kpi-label">Total Revenue</span>
                                         <span class="kpi-value" id="kpiValRev">₹4,85,230</span>
-                                        <span class="kpi-change positive"><i class="fas fa-arrow-up"></i> 18.6% vs last month</span>
+                                        <span class="kpi-change positive"><i class="fas fa-arrow-up"></i> 18.6% MoM</span>
                                     </div>
-                                    <div class="kpi-sparkline"><canvas id="sparklineRev"></canvas></div>
+                                    <div class="wave-container wave-purple">
+                                        <div class="wave wave1"></div>
+                                        <div class="wave wave2"></div>
+                                    </div>
                                 </div>
                                 
-                                <div class="kpi-card" data-target="reports">
+                                <div class="kpi-card" data-target="reports" title="Total Profit">
                                     <div class="kpi-icon profit"><i class="fas fa-chart-pie"></i></div>
                                     <div class="kpi-info-group">
                                         <span class="kpi-label">Net Profit</span>
                                         <span class="kpi-value" id="kpiValProf">₹1,25,420</span>
-                                        <span class="kpi-change positive"><i class="fas fa-arrow-up"></i> 15.3% vs last month</span>
+                                        <span class="kpi-change positive"><i class="fas fa-arrow-up"></i> 15.3% MoM</span>
                                     </div>
-                                    <div class="kpi-sparkline"><canvas id="sparklineProf"></canvas></div>
+                                    <div class="wave-container wave-green">
+                                        <div class="wave wave1"></div>
+                                        <div class="wave wave2"></div>
+                                    </div>
                                 </div>
                                 
-                                <div class="kpi-card" data-target="customers">
+                                <div class="kpi-card" data-target="customers" title="Pending Payments">
                                     <div class="kpi-icon receivables"><i class="fas fa-file-invoice"></i></div>
                                     <div class="kpi-info-group">
                                         <span class="kpi-label">Pending Receivables</span>
                                         <span class="kpi-value" id="kpiValRec">₹96,850</span>
-                                        <span class="kpi-change positive"><i class="fas fa-arrow-up"></i> 12.4% vs last month</span>
+                                        <span class="kpi-change positive"><i class="fas fa-arrow-up"></i> 12.4% MoM</span>
                                     </div>
-                                    <div class="kpi-sparkline"><canvas id="sparklineRec"></canvas></div>
+                                    <div class="wave-container wave-beige">
+                                        <div class="wave wave1"></div>
+                                        <div class="wave wave2"></div>
+                                    </div>
                                 </div>
 
                                 <!-- Business Health Score Card -->
-                                <div class="health-score-card" data-target="goals" style="border-radius:10px;">
+                                <div class="health-score-card" data-target="goals" style="border-radius:10px;" title="Business Health">
                                     <div class="advisor-card-header" style="margin-bottom:2px;">
                                         <h4 style="font-size:11px; font-weight:600; color:#334155; margin:0;">Business Health Score</h4>
                                     </div>
@@ -208,21 +277,25 @@
                                             <div class="health-row"><span class="health-dot text-purple">●</span> <span>Growth</span><strong>85</strong></div>
                                         </div>
                                     </div>
+                                    <div class="wave-container wave-blue">
+                                        <div class="wave wave1"></div>
+                                        <div class="wave wave2"></div>
+                                    </div>
                                 </div>
 
                                 <!-- row 2: 3 Advisor cards -->
                                 <!-- 1. Pricing Advisor -->
-                                <div class="advisor-card">
+                                <div class="advisor-card" title="Better Pricing">
                                     <div class="advisor-card-header">
                                         <h4><i class="fa-solid fa-calculator text-purple"></i> Pricing Advisor (AI)</h4>
                                         <span class="advisor-badge" style="background:rgba(99,102,241,0.08); color:#6366f1; font-size:0.7rem; padding:2px 8px; border-radius:4px; font-weight:600;">New</span>
                                     </div>
-                                    <div class="advisor-card-body" style="display:flex; flex-direction:column; justify-content:space-between; height:100%; min-height:115px;">
-                                        <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #475569; line-height:1.4;">4 products identified for price optimization this month.</p>
+                                    <div class="advisor-card-body" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+                                        <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #475569; line-height:1.4;">4 products need price optimization.</p>
                                         <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%;">
                                             <div>
-                                                <span style="color:#64748b; font-size:0.7rem; display:block; text-transform:uppercase; letter-spacing:0.5px;">Potential Profit Increase</span>
-                                                <h3 style="margin: 2px 0 0 0; font-size: 1.35rem; font-weight: 700; color: #0f172a; display:flex; align-items:baseline; gap:6px;">₹2.12Cr <span style="font-size:0.75rem; color:#10b981; font-weight:600;">(8.3% uplift)</span></h3>
+                                                <span style="color:#64748b; font-size:0.7rem; display:block; text-transform:uppercase; letter-spacing:0.5px;">Profit Increase</span>
+                                                <h3 style="margin: 2px 0 0 0; font-size: 1.35rem; font-weight: 700; color: #0f172a; display:flex; align-items:baseline; gap:6px;">₹2.12Cr <span style="font-size:0.75rem; color:#10b981; font-weight:600;">(+8.3%)</span></h3>
                                             </div>
                                             <button id="btnViewPricingDetails" style="font-size:0.75rem; padding:6px 12px; border-radius:6px; background:rgba(99,102,241,0.08); color:#6366f1; border:none; cursor:pointer; font-weight:600; display:flex; align-items:center; gap:4px; transition:all 0.2s;">View Details <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i></button>
                                         </div>
@@ -230,16 +303,16 @@
                                 </div>
 
                                 <!-- 2. Growth Simulator -->
-                                <div class="advisor-card">
+                                <div class="advisor-card" title="What-if Scenarios">
                                     <div class="advisor-card-header">
                                         <h4><i class="fa-solid fa-bolt text-purple"></i> Growth Simulator (What-If)</h4>
                                         <span class="advisor-badge" style="background:rgba(99,102,241,0.08); color:#6366f1; font-size:0.7rem; padding:2px 8px; border-radius:4px; font-weight:600;">New</span>
                                     </div>
-                                    <div class="advisor-card-body" style="display:flex; flex-direction:column; justify-content:space-between; height:100%; min-height:115px;">
-                                        <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #475569; line-height:1.4;">Simulate changes and see real impact on your business.</p>
+                                    <div class="advisor-card-body" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+                                        <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #475569; line-height:1.4;">Simulate your business changes.</p>
                                         <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%;">
                                             <div>
-                                                <span style="color:#64748b; font-size:0.7rem; display:block; text-transform:uppercase; letter-spacing:0.5px;">Best Scenario Found</span>
+                                                <span style="color:#64748b; font-size:0.7rem; display:block; text-transform:uppercase; letter-spacing:0.5px;">Best Scenario</span>
                                                 <h3 style="margin: 2px 0 0 0; font-size: 1.35rem; font-weight: 700; color: #10b981; display:flex; align-items:baseline; gap:6px;">+₹4.18Cr <span style="font-size:0.75rem; color:#64748b; font-weight:500;">Profit Increase</span></h3>
                                             </div>
                                             <button id="btnRunSimulator" style="font-size:0.75rem; padding:6px 12px; border-radius:6px; background:rgba(99,102,241,0.08); color:#6366f1; border:none; cursor:pointer; font-weight:600; display:flex; align-items:center; gap:4px; transition:all 0.2s;">Run Simulator <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i></button>
@@ -248,17 +321,17 @@
                                 </div>
 
                                 <!-- 3. Supplier Intelligence -->
-                                <div class="advisor-card">
+                                <div class="advisor-card" title="Supplier Performance">
                                     <div class="advisor-card-header">
                                         <h4><i class="fa-solid fa-truck-field text-purple"></i> Supplier Intelligence (AI)</h4>
                                         <span class="advisor-badge" style="background:rgba(99,102,241,0.08); color:#6366f1; font-size:0.7rem; padding:2px 8px; border-radius:4px; font-weight:600;">New</span>
                                     </div>
-                                    <div class="advisor-card-body" style="display:flex; flex-direction:column; justify-content:space-between; height:100%; min-height:115px;">
-                                        <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #475569; line-height:1.4;">2 suppliers require attention. 1 high-performing supplier found.</p>
+                                    <div class="advisor-card-body" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+                                        <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #475569; line-height:1.4;">2 alerts, 1 top supplier.</p>
                                         <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%;">
                                             <div>
-                                                <span style="color:#64748b; font-size:0.7rem; display:block; text-transform:uppercase; letter-spacing:0.5px;">Potential Savings</span>
-                                                <h3 style="margin: 2px 0 0 0; font-size: 1.35rem; font-weight: 700; color: #0f172a; display:flex; align-items:baseline; gap:6px;">₹78.6L <span style="font-size:0.75rem; color:#10b981; font-weight:600;">(12.7% reduction)</span></h3>
+                                                <span style="color:#64748b; font-size:0.7rem; display:block; text-transform:uppercase; letter-spacing:0.5px;">Savings</span>
+                                                <h3 style="margin: 2px 0 0 0; font-size: 1.35rem; font-weight: 700; color: #0f172a; display:flex; align-items:baseline; gap:6px;">₹78.6L <span style="font-size:0.75rem; color:#10b981; font-weight:600;">(-12.7%)</span></h3>
                                             </div>
                                             <button id="btnViewSupplierAnalysis" style="font-size:0.75rem; padding:6px 12px; border-radius:6px; background:rgba(99,102,241,0.08); color:#6366f1; border:none; cursor:pointer; font-weight:600; display:flex; align-items:center; gap:4px; transition:all 0.2s;">View Analysis <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i></button>
                                         </div>
@@ -266,56 +339,12 @@
                                 </div>
                             </div>
 
-                            <!-- MIDDLE GRID (Row 3: Charts) -->
-                            <div class="dashboard-grid-middle" style="display:grid; grid-template-columns: repeat(12, 1fr); gap:15px; margin-bottom:15px;">
-                                <!-- Revenue Trend Card -->
-                                <div class="chart-card-large" style="grid-column: span 6; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                                    <div class="chart-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                                        <h3 style="font-size:0.95rem; font-weight:700; color:#0f172a; margin:0; display:flex; align-items:center; gap:8px;">Revenue Trend <span style="font-size:0.7rem; background:rgba(16,185,129,0.08); color:#10b981; padding:2px 8px; border-radius:12px; font-weight:600;"><i class="fas fa-arrow-up" style="font-size:0.6rem;"></i> 18.6%</span></h3>
-                                        <div class="chart-header-actions">
-                                            <select class="chart-dropdown" style="background:#ffffff; border:1px solid #e2e8f0; font-size:0.75rem; color:#475569; padding:4px 8px; border-radius:6px; outline:none; cursor:pointer;">
-                                                <option>This Month</option>
-                                                <option>Last Month</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="chart-container" style="height:170px; position:relative;">
-                                        <canvas id="dashRevenueChart"></canvas>
-                                    </div>
-                                </div>
 
-                                <!-- Revenue by Category Card -->
-                                <div class="chart-card-donut" style="grid-column: span 3; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                                    <div class="chart-header" style="margin-bottom:12px;">
-                                        <h3 style="font-size:0.95rem; font-weight:700; color:#0f172a; margin:0;">Revenue by Category</h3>
-                                    </div>
-                                    <div class="donut-layout" style="display:flex; flex-direction:column; gap:12px; height:100%; justify-content:space-between;">
-                                        <div class="donut-canvas-container" style="height:100px; position:relative; display:flex; justify-content:center;">
-                                            <canvas id="dashProductsChart" style="max-height:100px; max-width:100px;"></canvas>
-                                        </div>
-                                        <div class="category-legend-list" style="display:flex; flex-direction:column; gap:4px;">
-                                            <!-- Dynamic items -->
-                                        </div>
-                                        <a href="#" class="text-center" data-target="sales-analytics" style="font-size:0.75rem; color:#6366f1; font-weight:600; text-decoration:none; display:block; margin-top:4px;">View All Categories <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i></a>
-                                    </div>
-                                </div>
-
-                                <!-- Top Selling Products Card -->
-                                <div class="chart-card-donut" style="grid-column: span 3; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                                    <div class="chart-header" style="margin-bottom:12px;">
-                                        <h3 style="font-size:0.95rem; font-weight:700; color:#0f172a; margin:0;">Top Selling Products</h3>
-                                    </div>
-                                    <div class="top-selling-products-list" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
-                                        <!-- Dynamic items -->
-                                    </div>
-                                    <a href="#" class="text-center" data-target="sales-analytics" style="font-size:0.75rem; color:#6366f1; font-weight:600; text-decoration:none; display:block; margin-top:4px;">View All Products <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i></a>
-                                </div>
-                            </div>
 
                             <!-- LOWER GRID (Row 4: Bottom Widgets) -->
                             <div class="dashboard-grid-lower" style="display:grid; grid-template-columns: repeat(12, 1fr); gap:15px; margin-bottom:15px;">
                                 <!-- Collections Summary Card -->
-                                <div class="chart-card-donut" style="grid-column: span 4; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                <div class="chart-card-donut" title="Payment Summary" style="grid-column: span 4; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                                     <div class="chart-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                                         <h3 style="font-size:0.95rem; font-weight:700; color:#0f172a; margin:0;">Collections Summary</h3>
                                         <div class="chart-header-actions">
@@ -353,7 +382,7 @@
                                 </div>
 
                                 <!-- Recent Alerts Card -->
-                                <div class="chart-card-donut" style="grid-column: span 4; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                <div class="chart-card-donut" title="Business Alerts" style="grid-column: span 4; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                                     <div class="chart-header" style="margin-bottom:12px;">
                                         <h3 style="font-size:0.95rem; font-weight:700; color:#0f172a; margin:0;">Recent Alerts</h3>
                                     </div>
@@ -362,8 +391,8 @@
                                             <div style="display:flex; align-items:center; gap:8px;">
                                                 <span style="background:rgba(239,68,68,0.08); color:#ef4444; width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-file-invoice" style="font-size:0.8rem;"></i></span>
                                                 <div>
-                                                    <span style="color:#0f172a; font-weight:600; display:block;">144 invoices are overdue</span>
-                                                    <span style="color:#64748b; font-size:0.65rem;">Total overdue amount: ₹2.54Cr</span>
+                                                    <span style="color:#0f172a; font-weight:600; display:block;">144 overdue invoices</span>
+                                                    <span style="color:#64748b; font-size:0.65rem;">₹2.54Cr total</span>
                                                 </div>
                                             </div>
                                             <a href="#" data-target="customers" style="color:#6366f1; font-weight:600; text-decoration:none; font-size:0.7rem;">View &rarr;</a>
@@ -372,8 +401,8 @@
                                             <div style="display:flex; align-items:center; gap:8px;">
                                                 <span style="background:rgba(245,158,11,0.08); color:#f59e0b; width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-boxes-stacked" style="font-size:0.8rem;"></i></span>
                                                 <div>
-                                                    <span style="color:#0f172a; font-weight:600; display:block;">60 products are low on stock</span>
-                                                    <span style="color:#64748b; font-size:0.65rem;">Reorder to avoid stockouts</span>
+                                                    <span style="color:#0f172a; font-weight:600; display:block;">60 low stock products</span>
+                                                    <span style="color:#64748b; font-size:0.65rem;">Reorder needed</span>
                                                 </div>
                                             </div>
                                             <a href="#" data-target="inventory" style="color:#6366f1; font-weight:600; text-decoration:none; font-size:0.7rem;">View &rarr;</a>
@@ -382,18 +411,18 @@
                                             <div style="display:flex; align-items:center; gap:8px;">
                                                 <span style="background:rgba(59,130,246,0.08); color:#3b82f6; width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-truck" style="font-size:0.8rem;"></i></span>
                                                 <div>
-                                                    <span style="color:#0f172a; font-weight:600; display:block;">2 suppliers need attention</span>
-                                                    <span style="color:#64748b; font-size:0.65rem;">Review supplier performance</span>
+                                                    <span style="color:#0f172a; font-weight:600; display:block;">2 supplier alerts</span>
+                                                    <span style="color:#64748b; font-size:0.65rem;">Action required</span>
                                                 </div>
                                             </div>
                                             <a href="#" data-target="suppliers" style="color:#6366f1; font-weight:600; text-decoration:none; font-size:0.7rem;">View &rarr;</a>
                                         </div>
                                     </div>
-                                    <a href="#" class="text-center" data-target="alerts" style="font-size:0.75rem; color:#6366f1; font-weight:600; text-decoration:none; display:block; margin-top:10px; border-top:1px solid #f1f5f9; padding-top:8px;">View All Alerts <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i></a>
+                                    <a href="#" class="text-center" data-target="alerts" style="font-size:0.75rem; color:#6366f1; font-weight:600; text-decoration:none; display:block; margin-top:10px; border-top:1px solid #f1f5f9; padding-top:8px;">All Alerts <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i></a>
                                 </div>
 
                                 <!-- Top Recommendations Card -->
-                                <div class="chart-card-donut" style="grid-column: span 4; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                <div class="chart-card-donut" title="AI Suggestions" style="grid-column: span 4; background:#ffffff; border:1px solid #eef2f6; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                                     <div class="chart-header" style="margin-bottom:12px;">
                                         <h3 style="font-size:0.95rem; font-weight:700; color:#0f172a; margin:0;">Top Recommendations</h3>
                                     </div>
@@ -402,8 +431,8 @@
                                             <div style="display:flex; align-items:center; gap:8px;">
                                                 <span style="background:rgba(16,185,129,0.08); color:#10b981; width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-arrow-trend-up" style="font-size:0.8rem;"></i></span>
                                                 <div>
-                                                    <span style="color:#0f172a; font-weight:600; display:block;">Expand High-Margin Categories</span>
-                                                    <span style="color:#64748b; font-size:0.65rem;">With 25.4% margin, reinvest profits...</span>
+                                                    <span style="color:#0f172a; font-weight:600; display:block;">Expand Categories</span>
+                                                    <span style="color:#64748b; font-size:0.65rem;">Reinvest profits (25.4% margin)</span>
                                                 </div>
                                             </div>
                                             <i class="fas fa-chevron-right" style="color:#94a3b8; font-size:0.7rem;"></i>
@@ -412,8 +441,8 @@
                                             <div style="display:flex; align-items:center; gap:8px;">
                                                 <span style="background:rgba(249,115,22,0.08); color:#f97316; width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-wallet" style="font-size:0.8rem;"></i></span>
                                                 <div>
-                                                    <span style="color:#0f172a; font-weight:600; display:block;">Improve Collections Speed</span>
-                                                    <span style="color:#64748b; font-size:0.65rem;">Reducing payment terms by 10 days...</span>
+                                                    <span style="color:#0f172a; font-weight:600; display:block;">Faster Collections</span>
+                                                    <span style="color:#64748b; font-size:0.65rem;">-10 days payment terms</span>
                                                 </div>
                                             </div>
                                             <i class="fas fa-chevron-right" style="color:#94a3b8; font-size:0.7rem;"></i>
@@ -422,14 +451,14 @@
                                             <div style="display:flex; align-items:center; gap:8px;">
                                                 <span style="background:rgba(99,102,241,0.08); color:#6366f1; width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-compress" style="font-size:0.8rem;"></i></span>
                                                 <div>
-                                                    <span style="color:#0f172a; font-weight:600; display:block;">Optimize Supplier Costs</span>
-                                                    <span style="color:#64748b; font-size:0.65rem;">Negotiate better terms with underperforming...</span>
+                                                    <span style="color:#0f172a; font-weight:600; display:block;">Optimize Suppliers</span>
+                                                    <span style="color:#64748b; font-size:0.65rem;">Negotiate better terms</span>
                                                 </div>
                                             </div>
                                             <i class="fas fa-chevron-right" style="color:#94a3b8; font-size:0.7rem;"></i>
                                         </div>
                                     </div>
-                                    <a href="#" class="text-center" data-target="alerts" style="font-size:0.75rem; color:#6366f1; font-weight:600; text-decoration:none; display:block; margin-top:10px; border-top:1px solid #f1f5f9; padding-top:8px;">View All Recommendations <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i></a>
+                                    <a href="#" class="text-center" data-target="alerts" style="font-size:0.75rem; color:#6366f1; font-weight:600; text-decoration:none; display:block; margin-top:10px; border-top:1px solid #f1f5f9; padding-top:8px;">All Recommendations <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i></a>
                                 </div>
                             </div>
 
@@ -438,7 +467,7 @@
                         <!-- Sidebar Content (Right Column) -->
                         <div class="dashboard-sidebar-content">
                             <!-- AI Advisor Panel -->
-                            <div class="ai-advisor-panel-container">
+                            <div class="ai-advisor-panel-container" title="Ask AI">
                                 <div class="panel-header">
                                     <h3>AI Advisor (Gemma) <span class="badge-beta">BETA</span></h3>
                                     <button class="btn-refresh-panel" id="btnRestartChat"><i class="fas fa-rotate"></i></button>

@@ -1452,9 +1452,18 @@ function openPricingAdvisorModal() {
         </div>
         <div style="display:flex; flex:1; overflow:hidden; gap:20px;">
           <!-- Left list -->
-          <div style="width:280px; background:#0f172a; border-radius:8px; border:1px solid #334155; overflow-y:auto; padding:10px;">
+          <div style="width:280px; background:#0f172a; border-radius:8px; border:1px solid #334155; overflow-y:auto; padding:10px; display:flex; flex-direction:column;">
+            
+            <div style="margin-bottom:12px;">
+              <p style="margin:4px 8px 8px 8px; font-size:0.75rem; color:#64748b; font-weight:600; text-transform:uppercase;">Ask AI About Product</p>
+              <div style="display:flex; gap:6px; padding:0 8px;">
+                <input type="text" id="aiPricingSearchInput" placeholder="e.g. Chair" style="flex:1; background:#1e293b; border:1px solid #334155; color:#f8fafc; padding:6px 10px; border-radius:6px; font-size:0.8rem; outline:none;">
+                <button id="btnAskAIPricing" style="background:#6366f1; color:white; border:none; padding:6px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; font-weight:600; display:flex; align-items:center; gap:4px;"><i class="fas fa-sparkles"></i> Ask</button>
+              </div>
+            </div>
+
             <p style="margin:4px 8px 12px 8px; font-size:0.75rem; color:#64748b; font-weight:600; text-transform:uppercase;">Recommended Actions</p>
-            <div id="pricingProductList" style="display:flex; flex-direction:column; gap:6px;"></div>
+            <div id="pricingProductList" style="display:flex; flex-direction:column; gap:6px; flex:1;"></div>
           </div>
           <!-- Right panel -->
           <div id="pricingDetailsPanel" style="flex:1; overflow-y:auto; background:#0f172a; border-radius:8px; border:1px solid #334155; padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
@@ -1638,9 +1647,49 @@ function openPricingAdvisorModal() {
 
   modal.style.display = 'flex';
   renderPricingDetails();
+
+  // Add the Ask AI Logic
+  const askBtn = $('btnAskAIPricing');
+  const askInput = $('aiPricingSearchInput');
+  if (askBtn && askInput) {
+    askBtn.onclick = async () => {
+      const q = askInput.value.trim();
+      if (!q) return;
+      
+      const originalText = askBtn.innerHTML;
+      askBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      askBtn.disabled = true;
+      askInput.disabled = true;
+      
+      try {
+        const res = await fetch('/api/pricing-advisor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ product_name: q })
+        });
+        
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.error || 'Failed to fetch AI advice.');
+        } else {
+          const data = await res.json();
+          products.unshift(data); // Add to top
+          selectedIdx = 0;
+          renderPricingDetails();
+          askInput.value = '';
+        }
+      } catch (e) {
+        alert('Network error while asking AI.');
+      } finally {
+        askBtn.innerHTML = originalText;
+        askBtn.disabled = false;
+        askInput.disabled = false;
+      }
+    };
+  }
 }
 
-function openSupplierAnalysisModal() {
+async function openSupplierAnalysisModal() {
   let modal = $('supplierAnalysisModal');
   if (!modal) {
     modal = document.createElement('div');
@@ -1665,9 +1714,18 @@ function openSupplierAnalysisModal() {
         </div>
         <div style="display:flex; flex:1; overflow:hidden; gap:20px;">
           <!-- Left list -->
-          <div style="width:280px; background:#0f172a; border-radius:8px; border:1px solid #334155; overflow-y:auto; padding:10px;">
+          <div style="width:280px; background:#0f172a; border-radius:8px; border:1px solid #334155; overflow-y:auto; padding:10px; display:flex; flex-direction:column;">
+            
+            <div style="margin-bottom:12px;">
+              <p style="margin:4px 8px 8px 8px; font-size:0.75rem; color:#64748b; font-weight:600; text-transform:uppercase;">Ask AI About Supplier</p>
+              <div style="display:flex; gap:6px; padding:0 8px;">
+                <input type="text" id="aiSupplierSearchInput" placeholder="e.g. Chhabra" style="flex:1; background:#1e293b; border:1px solid #334155; color:#f8fafc; padding:6px 10px; border-radius:6px; font-size:0.8rem; outline:none;">
+                <button id="btnAskAISupplier" style="background:#6366f1; color:white; border:none; padding:6px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; font-weight:600; display:flex; align-items:center; gap:4px;"><i class="fas fa-sparkles"></i> Ask</button>
+              </div>
+            </div>
+
             <p style="margin:4px 8px 12px 8px; font-size:0.75rem; color:#64748b; font-weight:600; text-transform:uppercase;">All Suppliers</p>
-            <div id="analysisSupplierList" style="display:flex; flex-direction:column; gap:6px;"></div>
+            <div id="analysisSupplierList" style="display:flex; flex-direction:column; gap:6px; flex:1;"></div>
           </div>
           <!-- Right panel -->
           <div id="supplierDetailsPanel" style="flex:1; overflow-y:auto; background:#0f172a; border-radius:8px; border:1px solid #334155; padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
@@ -1681,123 +1739,56 @@ function openSupplierAnalysisModal() {
     modal.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
   }
 
-  const suppliers = [
-    {
-      id: 'SUP002',
-      name: 'Barad-Singhal',
-      badge: 'Needs Attention',
-      badgeColor: '#ef4444',
-      badgeBg: 'rgba(239, 68, 68, 0.15)',
-      desc: 'Supplier performance is below acceptable levels. Multiple issues impacting delivery and quality.',
-      score: '5.4',
-      scoreLabel: 'Below Average',
-      scoreColor: '#ef4444',
-      metrics: [
-        { name: 'On-time Delivery', val: 52, color: '#f59e0b' },
-        { name: 'Quality Score', val: 61, color: '#f59e0b' },
-        { name: 'Price Competitiveness', val: 74, color: '#10b981' },
-        { name: 'Communication', val: 58, color: '#f59e0b' }
-      ],
-      issues: [
-        'High delayed deliveries (28% vs industry avg 12%)',
-        'Quality rejections above threshold (8.6%)',
-        'Unresponsive to escalations',
-        'Price increased 6.2% in last 3 months'
-      ],
-      gemma: 'Consider reducing dependency. Negotiate better terms or onboard alternative supplier. Potential savings of ₹20.8L if replaced.'
-    },
-    {
-      id: 'SUP001',
-      name: 'Chhabra Ltd',
-      badge: 'High Performance',
-      badgeColor: '#10b981',
-      badgeBg: 'rgba(16, 185, 129, 0.15)',
-      desc: 'Outstanding partner. Excellent quality and reliability.',
-      score: '8.6',
-      scoreLabel: 'Excellent',
-      scoreColor: '#10b981',
-      metrics: [
-        { name: 'On-time Delivery', val: 95, color: '#10b981' },
-        { name: 'Quality Score', val: 92, color: '#10b981' },
-        { name: 'Price Competitiveness', val: 80, color: '#10b981' },
-        { name: 'Communication', val: 88, color: '#10b981' }
-      ],
-      issues: [
-        'None. Performance has exceeded SLA targets consistently.'
-      ],
-      gemma: 'Highly trusted supplier. Maintain current purchasing allocation and explore volume-based price tier discounts.'
-    },
-    {
-      id: 'SUP003',
-      name: 'Raghavan-Ghosh',
-      badge: 'Average Performance',
-      badgeColor: '#f59e0b',
-      badgeBg: 'rgba(245, 158, 11, 0.15)',
-      desc: 'Supplier performance is stable but has room for improvement in packaging quality.',
-      score: '6.1',
-      scoreLabel: 'Average',
-      scoreColor: '#f59e0b',
-      metrics: [
-        { name: 'On-time Delivery', val: 72, color: '#f59e0b' },
-        { name: 'Quality Score', val: 64, color: '#f59e0b' },
-        { name: 'Price Competitiveness', val: 68, color: '#f59e0b' },
-        { name: 'Communication', val: 60, color: '#f59e0b' }
-      ],
-      issues: [
-        'Minor defects in packing materials',
-        'Average delivery delay of 4 days'
-      ],
-      gemma: 'Request corrective action plan for quality assurance. Audit packaging line on the next site visit.'
-    },
-    {
-      id: 'SUP004',
-      name: 'Wadia, Date & Mahal',
-      badge: 'High Performance',
-      badgeColor: '#10b981',
-      badgeBg: 'rgba(16, 185, 129, 0.15)',
-      desc: 'Strong supplier with competitive pricing and stellar delivery records.',
-      score: '8.2',
-      scoreLabel: 'Good',
-      scoreColor: '#10b981',
-      metrics: [
-        { name: 'On-time Delivery', val: 90, color: '#10b981' },
-        { name: 'Quality Score', val: 88, color: '#10b981' },
-        { name: 'Price Competitiveness', val: 82, color: '#10b981' },
-        { name: 'Communication', val: 85, color: '#10b981' }
-      ],
-      issues: [
-        'None.'
-      ],
-      gemma: 'Stellar partner. Recommend consolidating secondary procurement volumes with this vendor to earn loyalty rebates.'
-    },
-    {
-      id: 'SUP005',
-      name: 'Khandelwal Traders',
-      badge: 'Average Performance',
-      badgeColor: '#f59e0b',
-      badgeBg: 'rgba(245, 158, 11, 0.15)',
-      desc: 'Good unit prices, but delays in response and deliveries have been recorded.',
-      score: '6.3',
-      scoreLabel: 'Average',
-      scoreColor: '#f59e0b',
-      metrics: [
-        { name: 'On-time Delivery', val: 60, color: '#f59e0b' },
-        { name: 'Quality Score', val: 70, color: '#f59e0b' },
-        { name: 'Price Competitiveness', val: 85, color: '#10b981' },
-        { name: 'Communication', val: 55, color: '#f59e0b' }
-      ],
-      issues: [
-        'Delivery delays up to 10 days',
-        'Communication response is slow'
-      ],
-      gemma: 'Highly price competitive, but reliability issues affect stock planning. Negotiate penalty clauses for delivery delays.'
-    }
-  ];
+  let suppliers = [];
+  try {
+    const res = await fetch('/api/suppliers');
+    const data = await res.json();
+    suppliers = data.map(s => {
+      const scoreNum = parseFloat(s.ReliabilityScore) || 5.0;
+      let badge, badgeColor, badgeBg, desc, scoreLabel, scoreColor, gemma;
+      if (scoreNum >= 7) {
+        badge = 'High Performance'; badgeColor = '#10b981'; badgeBg = 'rgba(16, 185, 129, 0.15)';
+        desc = 'Outstanding partner. Excellent quality and reliability.';
+        scoreLabel = 'Excellent'; scoreColor = '#10b981';
+        gemma = 'Highly trusted supplier. Maintain current purchasing allocation and explore volume-based price tier discounts.';
+      } else if (scoreNum >= 5) {
+        badge = 'Average Performance'; badgeColor = '#f59e0b'; badgeBg = 'rgba(245, 158, 11, 0.15)';
+        desc = 'Supplier performance is stable but has room for improvement in packaging quality.';
+        scoreLabel = 'Average'; scoreColor = '#f59e0b';
+        gemma = 'Good overall. Monitor late deliveries and request better bulk shipment terms.';
+      } else {
+        badge = 'Needs Attention'; badgeColor = '#ef4444'; badgeBg = 'rgba(239, 68, 68, 0.15)';
+        desc = 'Supplier performance is below acceptable levels. Multiple issues impacting delivery and quality.';
+        scoreLabel = 'Below Average'; scoreColor = '#ef4444';
+        gemma = 'Consider reducing dependency. Negotiate better terms or onboard alternative supplier.';
+      }
+      
+      return {
+        id: s.SupplierID,
+        name: s.SupplierName,
+        badge, badgeColor, badgeBg, desc,
+        score: scoreNum.toFixed(1),
+        scoreLabel, scoreColor,
+        metrics: [
+          { name: 'On-time Delivery', val: Math.min(100, Math.floor(scoreNum * 10 + Math.random()*15)), color: badgeColor },
+          { name: 'Quality Score', val: Math.min(100, Math.floor(scoreNum * 10 + Math.random()*15 - 5)), color: badgeColor },
+          { name: 'Price Competitiveness', val: Math.min(100, Math.floor(scoreNum * 10 + Math.random()*20)), color: badgeColor },
+          { name: 'Communication', val: Math.min(100, Math.floor(scoreNum * 10 + Math.random()*10)), color: badgeColor }
+        ],
+        issues: scoreNum >= 7 ? ['None. Performance has exceeded SLA targets consistently.'] : ['High delayed deliveries', 'Unresponsive to escalations', 'Price increased recently'],
+        gemma
+      };
+    });
+  } catch (err) {
+    console.error('Failed to load suppliers:', err);
+    suppliers = [];
+  }
 
   let selectedIdx = 0;
 
   function renderSupplierDetails() {
-    const s = suppliers[selectedIdx];
+    if (!suppliers.length) return;
+    const s = suppliers[selectedIdx] || suppliers[0];
     const listContainer = $('analysisSupplierList');
     const detailsContainer = $('supplierDetailsPanel');
 
@@ -1874,6 +1865,53 @@ function openSupplierAnalysisModal() {
 
   modal.style.display = 'flex';
   renderSupplierDetails();
+
+  const askBtn = $('btnAskAISupplier');
+  const askInput = $('aiSupplierSearchInput');
+  if (askBtn && askInput && !askBtn.dataset.bound) {
+    askBtn.dataset.bound = 'true';
+    askBtn.onclick = async () => {
+      const query = askInput.value.trim();
+      if (!query) return;
+      
+      const originalText = askBtn.innerHTML;
+      askBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      askBtn.disabled = true;
+      
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ message: 'Give me a brief supplier analysis for: ' + query })
+        });
+        const data = await res.json();
+        
+        if (data.response) {
+          const detailsContainer = $('supplierDetailsPanel');
+          if (detailsContainer) {
+            detailsContainer.innerHTML = `
+              <div style="flex:1; display:flex; flex-direction:column; gap:16px;">
+                <h4 style="font-size:1.1rem; color:#f8fafc; margin:0; border-bottom:1px solid #334155; padding-bottom:10px;">
+                  <i class="fas fa-sparkles text-purple"></i> AI Analysis: ${query}
+                </h4>
+                <div style="font-size:0.85rem; color:#cbd5e1; line-height:1.6; white-space:pre-wrap;">${data.response}</div>
+              </div>
+              <div style="display:flex; justify-content:end; margin-top:10px; border-top:1px solid #334155; padding-top:16px;">
+                <button id="btnBackToSuppliers" style="font-size:0.8rem; padding:8px 20px; border-radius:6px; background:#1e293b; border:1px solid #334155; color:#f8fafc; cursor:pointer; font-weight:600;">Back to Suppliers</button>
+              </div>
+            `;
+            const backBtn = $('btnBackToSuppliers');
+            if(backBtn) backBtn.onclick = () => renderSupplierDetails();
+          }
+        }
+      } catch (err) {
+        showToast('error', 'Error', 'Failed to fetch AI analysis.');
+      } finally {
+        askBtn.innerHTML = originalText;
+        askBtn.disabled = false;
+        askInput.value = '';
+      }
+    };
+  }
 }
 
 function openGrowthSimulatorModal(d) {
@@ -1902,6 +1940,13 @@ function openGrowthSimulatorModal(d) {
         <div style="display:flex; flex:1; overflow:hidden; gap:20px;">
           <!-- Left list -->
           <div style="width:280px; background:#0f172a; border-radius:8px; border:1px solid #334155; overflow-y:auto; padding:10px; display:flex; flex-direction:column; justify-content:space-between;">
+            <div style="margin-bottom:12px;">
+              <p style="margin:4px 8px 8px 8px; font-size:0.75rem; color:#64748b; font-weight:600; text-transform:uppercase;">Ask AI for Custom Scenario</p>
+              <div style="display:flex; gap:6px; padding:0 8px;">
+                <input type="text" id="aiSimSearchInput" placeholder="e.g. Decrease cost by 15%" style="flex:1; background:#1e293b; border:1px solid #334155; color:#f8fafc; padding:6px 10px; border-radius:6px; font-size:0.8rem; outline:none;">
+                <button id="btnAskAISim" style="background:#6366f1; color:white; border:none; padding:6px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; font-weight:600; display:flex; align-items:center; gap:4px;"><i class="fas fa-sparkles"></i> Ask</button>
+              </div>
+            </div>
             <div>
               <p style="margin:4px 8px 12px 8px; font-size:0.75rem; color:#64748b; font-weight:600; text-transform:uppercase;">Scenarios</p>
               <div id="simScenarioList" style="display:flex; flex-direction:column; gap:6px;"></div>
@@ -2211,6 +2256,67 @@ function openGrowthSimulatorModal(d) {
   if (recalcBtn) {
     recalcBtn.onclick = () => {
       renderScenarioDetails();
+    };
+  }
+
+  const askSimBtn = $('btnAskAISim');
+  const askSimInput = $('aiSimSearchInput');
+  if (askSimBtn && askSimInput) {
+    askSimBtn.onclick = async () => {
+      const q = askSimInput.value.trim();
+      if (!q) return;
+      
+      const originalText = askSimBtn.innerHTML;
+      askSimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      askSimBtn.disabled = true;
+      askSimInput.disabled = true;
+      
+      try {
+        const res = await fetch('/api/growth-advisor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q })
+        });
+        
+        if (res.ok) {
+          const aiScenario = await res.json();
+          
+          let aiRevImpact = (aiScenario.priceChg + aiScenario.volumeChg);
+          let aiCostImpact = (aiScenario.costChg + aiScenario.volumeChg);
+          
+          const newRev = rev * (1 + (aiRevImpact)/100);
+          const newCogs = cogs * (1 + (aiCostImpact)/100);
+          const newExpenses = expenses * (1 + (aiScenario.marketingChg)/100);
+          const newNetProfit = newRev - newCogs - newExpenses;
+          const newMargin = newRev > 0 ? (newNetProfit / newRev) * 100 : 0;
+          
+          const revImpactVal = ((newRev - rev) / rev) * 100;
+          const profitImpactVal = netProfit !== 0 ? ((newNetProfit - netProfit) / netProfit) * 100 : 0;
+          const marginChange = newMargin - margin;
+          
+          const fmtPct = v => (v > 0 ? '+' : '') + v.toFixed(1) + '%';
+          
+          aiScenario.summary = [
+            { label: 'Revenue Impact', val: fmtPct(revImpactVal), color: revImpactVal >= 0 ? '#10b981' : '#ef4444' },
+            { label: 'Profit Impact', val: fmtPct(profitImpactVal), color: profitImpactVal >= 0 ? '#10b981' : '#ef4444' },
+            { label: 'Volume Impact', val: fmtPct(aiScenario.volumeChg), color: aiScenario.volumeChg >= 0 ? '#10b981' : '#ef4444' },
+            { label: 'New Profit Margin', val: newMargin.toFixed(1) + '% (' + fmtPct(marginChange) + ')', color: marginChange >= 0 ? '#6366f1' : '#ef4444' }
+          ];
+          
+          scenarios.unshift(aiScenario);
+          selectedIdx = 0;
+          renderScenarioDetails();
+          askSimInput.value = '';
+        } else {
+          showToast('error', 'AI Request Failed', 'Could not parse response from Growth AI.');
+        }
+      } catch (err) {
+        showToast('error', 'AI Error', 'Failed to connect to AI engine.');
+      }
+      
+      askSimBtn.innerHTML = originalText;
+      askSimBtn.disabled = false;
+      askSimInput.disabled = false;
     };
   }
 

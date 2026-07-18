@@ -1,0 +1,20 @@
+125:     total_cogs = 0
+129:             total_cogs += rev / markup
+136:     gross_profit = total_revenue - total_cogs
+137:     net_profit = gross_profit - total_expenses
+138:     net_profit_margin = (net_profit / total_revenue * 100) if total_revenue > 0 else 0
+264:     profit_sparkline = [round(rev * (net_profit_margin / 100)) for rev in revenue_sparkline]
+328:     profit_score = min((net_profit_margin / 20) * 100, 100)
+378:         "netProfit": net_profit,
+379:         "netProfitFmt": fmt_inr(net_profit),
+380:         "netProfitMargin": round(net_profit_margin, 1),
+391:         "totalCOGS": total_cogs,
+392:         "totalCOGSFmt": fmt_inr(total_cogs),
+458:     margin = kpis["netProfitMargin"]
+466:     cogs = kpis["totalCOGS"]
+524:         {"icon": "circle-nodes", "color": "blue", "text": f"COGS at {kpis['totalCOGSFmt']} vs Revenue {kpis['totalRevenueFmt']}. Gross margin = {round((rev - cogs) / rev * 100, 1) if rev > 0 else 0}%."},
+566: def get_cached_kpis():
+593:         "netProfitFmt": kpis["netProfitFmt"],
+594:         "netProfitMargin": kpis["netProfitMargin"],
+771:             bot_response = f"💰 **Profit Analysis:**\n\n• Net Profit: **{kpis['netProfitFmt']}** ({kpis['netProfitMargin']}% margin)\n• COGS: {kpis['totalCOGSFmt']}\n• Total Expenses: {kpis['totalExpensesFmt']}\n• {'⚠️ Margin below 20% benchmark. Consider cost reduction.' if kpis['netProfitMargin'] < 20 else '✅ Healthy profit margin above industry benchmark.'}"
+786:             bot_response = f"🏥 **Business Health Score: {kpis['healthScore']}/100 ({kpis['healthLabel']})**\n\n• Profit Margin Score: {min(kpis['netProfitMargin'] / 0.2, 100):.0f}/100\n• Collection Score: {kpis['collectionRate']:.0f}/100\n• {'✅ Business is performing well.' if kpis['healthScore'] >= 80 else '⚠️ Some areas need attention.'}"

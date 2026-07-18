@@ -754,6 +754,13 @@ class ChatRequest(BaseModel):
     message: str
     context: str = ""
 
+class PricingRequest(BaseModel):
+    product_name: str
+
+class GrowthRequest(BaseModel):
+    query: str
+
+
 @app.post("/api/chat")
 def api_chat(req: ChatRequest):
     kpis, ai = get_cached_kpis()
@@ -793,15 +800,20 @@ def api_chat(req: ChatRequest):
     if not bot_response:
         # 2. LLM Fallback (Smart API)
         import json
-        system_prompt = f"""You are Gemma, an expert AI Business Advisor for an SME. You have direct access to the live database metrics.
-Use the following JSON context representing the current state of the business to answer the user's questions intelligently. 
-Always provide concise, data-driven answers using Markdown formatting.
+        system_prompt = f"""You are Gemma, an expert AI Business Advisor for an SME. You are chatting directly with the user.
+Use the following BUSINESS CONTEXT to answer the user's questions intelligently. 
 
-BUSINESS CONTEXT (JSON):
-{json.dumps(kpis, indent=2, default=str)}
+[BUSINESS CONTEXT START]
+{json.dumps(kpis, indent=2, default=str, ensure_ascii=False)}
 
-AI RECOMMENDATIONS & ALERTS (JSON):
-{json.dumps(ai, indent=2, default=str)}
+{json.dumps(ai, indent=2, default=str, ensure_ascii=False)}
+[BUSINESS CONTEXT END]
+
+CRITICAL INSTRUCTIONS:
+1. Keep your answers EXTREMELY short and concise (Maximum 2-3 sentences).
+2. NEVER output raw JSON in your response. DO NOT repeat the context block.
+3. Do not include boilerplate introductions, long lists, or unnecessary follow-up questions.
+4. Answer the user's question directly, briefly, and data-driven using Markdown.
 """
         try:
             url = "https://integrate.api.nvidia.com/v1/chat/completions"
@@ -830,6 +842,173 @@ AI RECOMMENDATIONS & ALERTS (JSON):
             bot_response = f"🤖 **Gemma AI Insight:**\n\nI am currently experiencing connection issues to the language model. However, here are your top alerts:\n" + "\n".join([f"• {a['title']}: {a['message']}" for a in ai['alerts'][:2]])
 
     return JSONResponse({"response": bot_response})
+
+@app.post("/api/pricing-advisor")
+def api_pricing_advisor(req: PricingRequest):
+    conn = get_db()
+    cur = conn.cursor()
+    
+    # 1. Search for product in DB
+    search_term = f"%{req.product_name}%"
+    cur.execute("""
+        SELECT p.ProductID, p.ProductName, p.DefaultSellingPrice, p.StandardMarkup 
+        FROM products p 
+        WHERE p.ProductName LIKE ? COLLATE NOCASE
+        LIMIT 1
+    """, (search_term,))
+    product = cur.fetchone()
+    
+    if not product:
+        conn.close()
+        return JSONResponse({"error": "Product not found"}, status_code=404)
+        
+    product_id, product_name, default_price, markup = product
+    default_price = safe_float(default_price)
+    
+    # 2. Get Sales and Cost Data
+    cur.execute("""
+        SELECT SUM(CAST(Quantity AS REAL)), SUM(CAST(TotalAmount AS REAL))
+        FROM sales_raw
+        WHERE ProductID = ?
+    """, (product_id,))
+    sales_data = cur.fetchone()
+    total_qty_sold = safe_float(sales_data[0]) if sales_data[0] else 0
+    total_revenue = safe_float(sales_data[1]) if sales_data[1] else 0
+    
+    cur.execute("""
+        SELECT AVG(CAST(CostPerUnit AS REAL))
+        FROM purchase_orders
+        WHERE ProductID = ?
+    """, (product_id,))
+    cost_data = cur.fetchone()
+    avg_cost = safe_float(cost_data[0]) if cost_data and cost_data[0] else (default_price / (1 + safe_float(markup)/100) if markup else default_price * 0.7)
+    current_margin = ((default_price - avg_cost) / default_price * 100) if default_price > 0 else 0
+    
+    conn.close()
+    
+    # 3. Formulate Prompt for Gemma
+    prompt = f"""You are Gemma, an expert Pricing Advisor. Analyze this product:
+Product: {product_name}
+Current Price: ₹{default_price:.2f}
+Cost Price: ₹{avg_cost:.2f}
+Margin: {current_margin:.1f}%
+Total Sold (This Month): {int(total_qty_sold)} units
+
+Provide a strategic pricing recommendation. Return ONLY valid JSON with this exact schema:
+{{
+  "badge": "Short 2-3 word action (e.g. 'Increase 5-7%', 'Hold Price')",
+  "badgeColor": "#10b981 if good/increase, #f59e0b if warning, #ef4444 if critical",
+  "desc": "1-2 sentence high-level summary of the strategy.",
+  "gemma": "A detailed 2-3 sentence explanation of the reasoning and projected impact.",
+  "insights": {{
+    "currentPrice": "formatted price (e.g. ₹1,250)",
+    "costPrice": "formatted cost",
+    "currentMargin": "percentage with 1 decimal",
+    "compPrice": "invent a realistic competitor price slightly higher or lower",
+    "sales": "units sold formatted",
+    "growth": "invent a realistic +X% growth metric",
+    "elasticity": "invent a realistic elasticity metric like 'Low (0.32)'",
+    "trend": "invent a realistic trend string like 'Increasing'"
+  }},
+  "impacts": [
+    {{"label": "Price Increase", "val": "5-7%", "color": "#6366f1"}},
+    {{"label": "Profit Increase", "val": "₹XXL", "color": "#10b981"}},
+    {{"label": "Margin Increase", "val": "+X.X%", "color": "#3b82f6"}},
+    {{"label": "Revenue Impact", "val": "Minimal", "color": "#64748b"}}
+  ]
+}}"""
+    
+    try:
+        url = "https://integrate.api.nvidia.com/v1/chat/completions"
+        headers = {
+            "Authorization": "Bearer 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",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": "google/gemma-3n-e2b-it",
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.2,
+            "top_p": 0.7,
+            "max_tokens": 1024,
+        }
+        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        response.raise_for_status()
+        data = response.json()
+        content = data["choices"][0]["message"]["content"].strip()
+        
+        # Clean markdown codeblocks if present
+        if content.startswith("```"):
+            content = "\n".join(content.split("\n")[1:-1])
+            
+        import json
+        result = json.loads(content)
+        result["id"] = product_id
+        result["name"] = product_name
+        return JSONResponse(result)
+    except Exception as e:
+        print("LLM Pricing Error:", str(e))
+        return JSONResponse({"error": "Failed to generate AI advice. Please try again."}, status_code=500)
+
+
+
+@app.post("/api/growth-advisor")
+def api_growth_advisor(req: GrowthRequest):
+    prompt = f"""You are Gemma, an AI Growth Simulator. The user is asking to simulate a business scenario.
+User Request: {req.query}
+
+Analyze their request and return a JSON object with the estimated impact.
+Use the following JSON schema strictly (no markdown, no quotes around keys unless valid JSON):
+{{
+  "name": "Short Scenario Name",
+  "title": "Scenario: Description of the scenario",
+  "badge": "AI Generated",
+  "badgeColor": "#8b5cf6",
+  "desc": "Detailed explanation of how this affects the business.",
+  "volumeChg": 0.0,
+  "priceChg": 0.0,
+  "costChg": 0.0,
+  "marketingChg": 0.0
+}}
+
+IMPORTANT:
+- volumeChg, priceChg, costChg, marketingChg MUST be numeric (float/int) percentages (e.g. 5.5 for +5.5%, -10 for -10%).
+- Do NOT wrap in ```json ... ``` blocks. Return purely valid JSON.
+"""
+    try:
+        url = "https://integrate.api.nvidia.com/v1/chat/completions"
+        headers = {
+            "Authorization": "Bearer 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",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": "google/gemma-3n-e2b-it",
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.2,
+            "top_p": 0.7,
+            "max_tokens": 1024,
+        }
+        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        response.raise_for_status()
+        data = response.json()
+        content = data["choices"][0]["message"]["content"].strip()
+        
+        # Clean markdown codeblocks if present
+        if content.startswith("```"):
+            content = "\n".join(content.split("\n")[1:-1])
+            
+        import json
+        result = json.loads(content)
+        
+        # Ensure numerics
+        result["volumeChg"] = float(result.get("volumeChg", 0.0))
+        result["priceChg"] = float(result.get("priceChg", 0.0))
+        result["costChg"] = float(result.get("costChg", 0.0))
+        result["marketingChg"] = float(result.get("marketingChg", 0.0))
+        
+        return JSONResponse(result)
+    except Exception as e:
+        print("LLM Growth Simulator Error:", str(e))
+        return JSONResponse({"error": "Failed to simulate scenario. Please try again."}, status_code=500)
 
 # ── Static file serving (serve the frontend) ──
 @app.get("/styles.css")

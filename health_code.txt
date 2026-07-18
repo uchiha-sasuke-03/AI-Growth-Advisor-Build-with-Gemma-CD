@@ -1,0 +1,32 @@
+288:     cur.execute("SELECT SupplierID, SupplierName, ReliabilityScore FROM suppliers")
+289:     sup_map = {r[0]: {"name": r[1], "score": r[2]} for r in cur.fetchall()}
+294:         "reliability": sup_map.get(r[0], {}).get("score", "N/A")
+327:     # ── Health Score ──
+328:     profit_score = min((net_profit_margin / 20) * 100, 100)
+329:     collection_score = collection_rate
+331:     expense_score = max(100 - expense_ratio, 0)
+332:     health_score = round(profit_score * 0.4 + collection_score * 0.4 + expense_score * 0.2)
+333:     if health_score >= 80:
+334:         health_label = "Excellent"
+335:         health_color = "green"
+336:     elif health_score >= 60:
+337:         health_label = "Good"
+338:         health_color = "blue"
+339:     elif health_score >= 40:
+340:         health_label = "Fair"
+341:         health_color = "orange"
+343:         health_label = "At Risk"
+344:         health_color = "red"
+414:         # ── Health Score ──
+415:         "healthScore": health_score,
+416:         "healthLabel": health_label,
+417:         "healthColor": health_color,
+459:     health = kpis["healthScore"]
+484:     if health >= 80:
+485:         alerts.append({"type": "success", "title": "Excellent Business Health", "message": f"Health score {health}/100. Business is performing well across all metrics.", "action": "goals"})
+597:         "healthScore": kpis["healthScore"],
+598:         "healthLabel": kpis["healthLabel"],
+771:             bot_response = f"💰 **Profit Analysis:**\n\n• Net Profit: **{kpis['netProfitFmt']}** ({kpis['netProfitMargin']}% margin)\n• COGS: {kpis['totalCOGSFmt']}\n• Total Expenses: {kpis['totalExpensesFmt']}\n• {'⚠️ Margin below 20% benchmark. Consider cost reduction.' if kpis['netProfitMargin'] < 20 else '✅ Healthy profit margin above industry benchmark.'}"
+779:             bot_response = f"🚛 **Supplier Intelligence:**\n\n• Total Suppliers: {kpis['totalSuppliers']}\n• Total PO Spend: {kpis['totalPOSpend']}\n• Top Suppliers:\n" + "\n".join([f"  • {s['name']}: {s['value']} (Score: {s['reliability']}/10)" for s in top_s])
+785:         elif any(w in msg for w in ["health", "score", "performance"]):
+786:             bot_response = f"🏥 **Business Health Score: {kpis['healthScore']}/100 ({kpis['healthLabel']})**\n\n• Profit Margin Score: {min(kpis['netProfitMargin'] / 0.2, 100):.0f}/100\n• Collection Score: {kpis['collectionRate']:.0f}/100\n• {'✅ Business is performing well.' if kpis['healthScore'] >= 80 else '⚠️ Some areas need attention.'}"
