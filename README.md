@@ -71,6 +71,46 @@ The backend provides various endpoints to fetch business data:
 - `/api/suppliers` & `/api/purchase-orders`: Procurement and supplier data.
 - `/api/chat`: AI chat interface endpoint.
 
+## Architecture & Workflows
+
+### Pricing Advisor (AI) Flow
+```mermaid
+graph TD;
+    A[Sales Data & KPIs] --> B[AI Engine];
+    C[Competitor Pricing] --> B;
+    B --> D{Demand Elasticity};
+    D -- High Demand --> E[Recommendation: Increase Price];
+    D -- Stable Demand --> F[Recommendation: Maintain Price];
+    D -- Low Demand --> G[Recommendation: Reduce Price];
+    E --> H[Dashboard Display];
+    F --> H;
+    G --> H;
+```
+
+### Supplier Intelligence Flow
+```mermaid
+graph TD;
+    A[Purchase Orders] --> B[Supplier Data Analysis];
+    B --> C{Calculate Reliability Score};
+    C -->|On-time Delivery| D[Score +];
+    C -->|Quality Issues| E[Score -];
+    C -->|Cost Variance| F[Score Adjusted];
+    D --> G[Generate Optimization Opportunities];
+    E --> G;
+    F --> G;
+    G --> H[Actionable Supplier Alerts];
+```
+
+### Growth Simulator Flow
+```mermaid
+graph LR;
+    A[User Inputs What-If Scenario] --> B[Load Base KPIs];
+    B --> C[Apply Simulator Multipliers];
+    C --> D[Recalculate Projected Revenue & Costs];
+    D --> E[Forecast New Net Profit];
+    E --> F[Visualize Potential Impact];
+```
+
 ## License
 
 This project is licensed under the MIT License.
