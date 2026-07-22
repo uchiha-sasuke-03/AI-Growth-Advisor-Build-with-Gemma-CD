@@ -110,7 +110,3 @@ graph LR;
     D --> E[Forecast New Net Profit];
     E --> F[Visualize Potential Impact];
 ```
-
-## License
-
-This project is licensed under the MIT License.
